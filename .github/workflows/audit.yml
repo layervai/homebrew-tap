@@ -1,0 +1,39 @@
+name: Audit
+
+on:
+  push:
+    branches: [main]
+    paths: ["Formula/**"]
+  pull_request:
+    paths: ["Formula/**"]
+
+jobs:
+  audit:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tap this repo
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/layervai"
+          ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/layervai/homebrew-tap"
+
+      - name: Audit formulae
+        run: |
+          for formula in Formula/*.rb; do
+            [ -f "$formula" ] || continue
+            name=$(basename "$formula" .rb)
+            echo "::group::Auditing $name"
+            brew audit --strict "layervai/tap/$name"
+            echo "::endgroup::"
+          done
+
+      - name: Style check
+        run: |
+          for formula in Formula/*.rb; do
+            [ -f "$formula" ] || continue
+            name=$(basename "$formula" .rb)
+            echo "::group::Style check $name"
+            brew style "layervai/tap/$name"
+            echo "::endgroup::"
+          done

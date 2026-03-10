@@ -1,0 +1,36 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+    paths: ["Formula/**"]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Tap this repo
+        run: |
+          mkdir -p "$(brew --repository)/Library/Taps/layervai"
+          ln -s "$GITHUB_WORKSPACE" "$(brew --repository)/Library/Taps/layervai/homebrew-tap"
+
+      - name: Install and test formulae
+        run: |
+          for formula in Formula/*.rb; do
+            [ -f "$formula" ] || continue
+            name=$(basename "$formula" .rb)
+            echo "::group::Installing $name"
+            brew install --build-from-source "layervai/tap/$name"
+            echo "::endgroup::"
+            echo "::group::Testing $name"
+            brew test "layervai/tap/$name"
+            echo "::endgroup::"
+          done
