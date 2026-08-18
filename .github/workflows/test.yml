@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     branches: [main]
-    paths: ["Formula/**"]
+    paths: ["Formula/**", "Casks/**"]
 
 jobs:
   test:
@@ -32,5 +32,20 @@ jobs:
             echo "::endgroup::"
             echo "::group::Testing $name"
             brew test "layervai/tap/$name"
+            echo "::endgroup::"
+          done
+
+      - name: Install casks
+        run: |
+          # Casks have no `brew test` block; installing and finding the
+          # binary on PATH is the meaningful check. These are binary-artifact
+          # casks, which install on macOS and Linux alike (Homebrew >= 4.5).
+          # Token == binary name for everything GoReleaser publishes here.
+          for cask in Casks/*.rb; do
+            [ -f "$cask" ] || continue
+            name=$(basename "$cask" .rb)
+            echo "::group::Installing cask $name"
+            brew install --cask "layervai/tap/$name"
+            command -v "$name"
             echo "::endgroup::"
           done
