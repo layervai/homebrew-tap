@@ -4,24 +4,24 @@ cask "qurl" do
 
   on_macos do
     on_arm do
-      sha256 "ba2f5648751fe83f6c9a1984f78e1f2088f01fe5d555f2cce6241367fe9dd9ee"
+      sha256 "7006458d2ff4085da0699e2fdf35347480085b406762834c668661f48602a338"
       url "https://github.com/layervai/qurl-integrations/releases/download/v#{version}/qurl_#{version}_darwin_arm64.tar.gz",
         verified: "github.com/layervai/qurl-integrations/releases/download"
     end
     on_intel do
-      sha256 "892c48049d7d3bbb1fa45b2058d469a764503144e70123293c271b737313562f"
+      sha256 "b1319eff3e794fb524884a7e93c7d856171f6eb592571229ed1eab05cf12dbdd"
       url "https://github.com/layervai/qurl-integrations/releases/download/v#{version}/qurl_#{version}_darwin_amd64.tar.gz",
         verified: "github.com/layervai/qurl-integrations/releases/download"
     end
   end
   on_linux do
     on_arm do
-      sha256 "61e90be662ce9043a13b2562071bf03d5cb81beebe0ceddc0f07e2968bc9562b"
+      sha256 "4b164fdb580e700ef15cdcca7f6c632d34f7f49f1aeba77491c7699039885ae0"
       url "https://github.com/layervai/qurl-integrations/releases/download/v#{version}/qurl_#{version}_linux_arm64.tar.gz",
         verified: "github.com/layervai/qurl-integrations/releases/download"
     end
     on_intel do
-      sha256 "b83abc2c9da42e0c85409729ab7299dafaee5d3750bb3966ca2554922c3f6200"
+      sha256 "55c4f935fad5bff057e4bad0e97f4cf65fcc1e2213c3233e8eefce838e49211e"
       url "https://github.com/layervai/qurl-integrations/releases/download/v#{version}/qurl_#{version}_linux_amd64.tar.gz",
         verified: "github.com/layervai/qurl-integrations/releases/download"
     end
