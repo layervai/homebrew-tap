@@ -3,9 +3,9 @@ name: Audit
 on:
   push:
     branches: [main]
-    paths: ["Formula/**", "Casks/**"]
+    paths: ["Formula/**", "Casks/**", ".github/workflows/audit.yml"]
   pull_request:
-    paths: ["Formula/**", "Casks/**"]
+    paths: ["Formula/**", "Casks/**", ".github/workflows/audit.yml"]
 
 jobs:
   audit:
@@ -24,6 +24,7 @@ jobs:
             [ -f "$formula" ] || continue
             name=$(basename "$formula" .rb)
             echo "::group::Auditing $name"
+            brew trust --formula "layervai/tap/$name"
             brew audit --strict "layervai/tap/$name"
             echo "::endgroup::"
           done
@@ -37,6 +38,7 @@ jobs:
             [ -f "$cask" ] || continue
             name=$(basename "$cask" .rb)
             echo "::group::Auditing cask $name"
+            brew trust --cask "layervai/tap/$name"
             brew audit --cask "layervai/tap/$name"
             echo "::endgroup::"
           done
